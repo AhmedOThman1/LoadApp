@@ -6,6 +6,7 @@ import android.app.Notification.EXTRA_TITLE
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
+import android.app.PendingIntent.FLAG_MUTABLE
 import android.content.Context
 import android.content.Intent
 import android.os.Build
@@ -73,12 +74,22 @@ object NotificationUtils {
         bundle.putInt("NOTIFICATION_ID", notificationId)
         notifyIntent.putExtras(bundle)
 
-        val pendingIntent = PendingIntent.getActivity(
-            context,
-            REQUEST_CODE,
-            notifyIntent,
-            PendingIntent.FLAG_UPDATE_CURRENT
-        )
+        val pendingIntent =
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                PendingIntent.getActivity(
+                    context,
+                    REQUEST_CODE,
+                    notifyIntent,
+                    PendingIntent.FLAG_MUTABLE
+                )
+            } else
+                PendingIntent.getActivity(
+                    context,
+                    REQUEST_CODE,
+                    notifyIntent,
+                    PendingIntent.FLAG_UPDATE_CURRENT or FLAG_MUTABLE
+                )
+
 
         val notificationChannel = getChannel(context)
 
