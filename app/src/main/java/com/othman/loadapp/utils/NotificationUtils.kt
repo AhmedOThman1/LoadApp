@@ -87,7 +87,7 @@ object NotificationUtils {
                     context,
                     REQUEST_CODE,
                     notifyIntent,
-                    PendingIntent.FLAG_UPDATE_CURRENT or FLAG_MUTABLE
+                    PendingIntent.FLAG_UPDATE_CURRENT
                 )
 
 
