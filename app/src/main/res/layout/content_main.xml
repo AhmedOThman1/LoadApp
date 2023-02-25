@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginBottom="16dp"
+    android:orientation="vertical"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.othman.loadapp.MainActivity"
+    tools:showIn="@layout/activity_main">
+
+    <ImageView
+        android:id="@+id/download_img"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:background="#303030"
+        android:contentDescription="@string/cloud_image"
+        android:src="@drawable/ic_baseline_cloud_download_24"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <RadioGroup
+        android:id="@+id/radio_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="8dp"
+        android:layout_marginVertical="16dp"
+        android:padding="8dp"
+        app:layout_constraintTop_toBottomOf="@id/download_img">
+
+        <RadioButton
+            android:id="@+id/glide"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:text="@string/glide_image_loading_library_by_bumptech"
+            android:textSize="18sp" />
+
+        <RadioButton
+            android:id="@+id/loadapp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:text="@string/loadapp_current_repository_by_udacity"
+            android:textSize="18sp" />
+
+        <RadioButton
+            android:id="@+id/retrofit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:text="@string/retrofit_type_safe_http_client_for_android_and_java_by_square_inc"
+            android:textSize="18sp" />
+    </RadioGroup>
+
+    <com.othman.loadapp.LoadingButton
+        android:id="@+id/custom_button"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_margin="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/radio_group"
+        app:layout_constraintVertical_bias="1.0"
+        app:lb_background_color="@color/blue"
+        app:lb_circle_color="@color/white"
+        app:lb_circle_margin="16dp"
+        app:lb_downloading_text="@string/downloading"
+        app:lb_idle_text="@string/download"
+        app:lb_progress_color="#303030"
+        app:lb_radius="15dp"
+        app:lb_textSize="18sp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

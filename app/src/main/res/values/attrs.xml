@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="LoadingButton">
+        <attr name="lb_background_color" format="color"/>
+        <attr name="lb_progress_color" format="color"/>
+        <attr name="lb_circle_color" format="color"/>
+        <attr name="lb_text_color" format="color"/>
+        <attr name="lb_circle_margin" format="dimension"/>
+        <attr name="lb_textSize" format="dimension"/>
+        <attr name="lb_radius" format="dimension"/>
+        <attr name="lb_idle_text" format="string"/>
+        <attr name="lb_downloading_text" format="string"/>
+    </declare-styleable>
+</resources>
