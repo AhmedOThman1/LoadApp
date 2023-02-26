@@ -1,19 +1,20 @@
 package com.othman.loadapp.utils
 
 
+import android.Manifest.permission.POST_NOTIFICATIONS
 import android.annotation.SuppressLint
 import android.app.Notification.EXTRA_TITLE
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
-import android.app.PendingIntent.FLAG_MUTABLE
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.provider.AlarmClock.EXTRA_MESSAGE
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
-import androidx.annotation.StringRes
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import com.othman.loadapp.DetailActivity
@@ -55,6 +56,7 @@ object NotificationUtils {
             lockscreenVisibility = channelDetails.visibility
             notificationManager.createNotificationChannel(this)
         }
+
     }
 
     fun sendNotification(
@@ -109,8 +111,13 @@ object NotificationUtils {
                 )
             )
             .build()
+        if (ContextCompat.checkSelfPermission(
+                context,
+                POST_NOTIFICATIONS,
+            ) == PackageManager.PERMISSION_GRANTED
+        )
+            notificationManager.notify(notificationId, notification)
 
-        notificationManager.notify(notificationId, notification)
     }
 
     fun clearNotification(context: Context, notificationId: Int) {

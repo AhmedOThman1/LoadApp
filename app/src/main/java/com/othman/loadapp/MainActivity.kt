@@ -1,5 +1,6 @@
 package com.othman.loadapp
 
+import android.Manifest.permission.POST_NOTIFICATIONS
 import android.app.DownloadManager
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -7,14 +8,18 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.content.pm.PackageManager
 import android.database.Cursor
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
+import androidx.core.content.ContextCompat
 import com.othman.loadapp.utils.NotificationUtils
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_detail.*
@@ -29,12 +34,26 @@ class MainActivity : AppCompatActivity() {
     private lateinit var notificationManager: NotificationManager
     private lateinit var pendingIntent: PendingIntent
     private lateinit var action: NotificationCompat.Action
+    private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
         initChannel()
+        requestPermissionLauncher =
+            registerForActivityResult(ActivityResultContracts.RequestPermission()) {
+                if (it) {
+                    download()
+                    custom_button.buttonState = LoadingButton.ButtonState.DOWNLOADING
+                } else {
+                    Toast.makeText(
+                        this,
+                        "Please grant Notification permission from App Settings",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            }
 
         registerReceiver(receiver, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
 
@@ -50,8 +69,16 @@ class MainActivity : AppCompatActivity() {
                     else -> ""
                 }
                 Log.w("URL", "" + URL)
-                download()
-                custom_button.buttonState = LoadingButton.ButtonState.DOWNLOADING
+                if (ContextCompat.checkSelfPermission(
+                        this,
+                        POST_NOTIFICATIONS,
+                    ) == PackageManager.PERMISSION_GRANTED
+                ) {
+                    download()
+                    custom_button.buttonState = LoadingButton.ButtonState.DOWNLOADING
+                } else {
+                    requestPermissionLauncher.launch(POST_NOTIFICATIONS)
+                }
             }
         }
     }
@@ -99,7 +126,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun sendNotification(isSuccess: Boolean,id:Long) {
+    private fun sendNotification(isSuccess: Boolean, id: Long) {
         custom_button.buttonState = LoadingButton.ButtonState.IDLE
         NotificationUtils.sendNotification(
             context = this@MainActivity,
